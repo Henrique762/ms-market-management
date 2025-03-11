@@ -103,7 +103,19 @@ def validacao_senha(form):
         raise ValueError("Campo deve ter no mínimo 8 caracteres com maiusculas, minusculas e um caractere especial")
 
 def validacao_celular(form):
+    if "Celular" not in form:
+        raise ValueError("Campo não informado.")
+    
+    if form['Celular'] is None:
+        raise ValueError("Campo está vazio.")
 
+    if not isinstance(form['Celular'], str):
+        raise ValueError("Campo deve ser uma String")
+    
+    valid_num = r"^\+\d{1,3}\d{2}\d{8,9}$"
+
+    if re.search(valid_num, form['Celular']) is None:
+        raise ValueError("Número inválido. Use o formato: +DDIDDDNÚMERO (ex: +5511912345678)")
     
 
     

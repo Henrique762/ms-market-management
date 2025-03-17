@@ -12,5 +12,16 @@ def validar():
     
 
 
+@app.route('/login', methods=['POST'])
+def login():
+    dados = request.json
+    username = dados.get('username')
+    email = dados.get('email')
+    celular = dados.get('celular')
+    senha = dados.get('senha')
+
+
 if __name__ == '__main__':
     app.run(host=app.config["HOST"], port = app.config['PORT'],debug=app.config['DEBUG'])
+
+    

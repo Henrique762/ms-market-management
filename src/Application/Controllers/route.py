@@ -1,5 +1,5 @@
 from config.config import app, request, jsonify
-from Application.Controllers.cadastro import validacao
+from Application.Validators.cadastro import validacao
 
 @app.route('/cadastro', methods=['POST'])
 def cadastro():
@@ -8,7 +8,7 @@ def cadastro():
     return jsonify(validacao_retorno)
 
 @app.route('/cadastro/validacao', methods=['POST'])
-def validar():
+# def validar():
     
 
 

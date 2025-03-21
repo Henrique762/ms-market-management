@@ -1,29 +1,11 @@
-from config.config import app, request, jsonify
-from Application.Validators.cadastro import validacao
+from flask import Blueprint, Flask,request, jsonify
+from src.config.config import app
+from src.Application.Validators.cadastro import create_user
 
-@app.route('/cadastro', methods=['POST'])
+cadastro_blueprint = Blueprint('cadastro', __name__, url_prefix='/api')
+
+@cadastro_blueprint.route('/sellers', methods=['POST'])
 def cadastro():
     forms_cadastro = request.get_json()
-    validacao_retorno = validacao(forms_cadastro)
-    return jsonify(validacao_retorno)
-
-@app.route('/cadastro/validacao', methods=['POST'])
-# def validar():
-    
-
-
-@app.route('/login', methods=['POST'])
-def login():
-    dados = request.json
-    username = dados.get('username')
-    email = dados.get('email')
-    celular = dados.get('celular')
-    senha = dados.get('senha')
-
-#Buscar usuário pelo email
-    usuario = User.query.filter_by(email=email).first()
-
-if __name__ == '__main__':
-    app.run(host=app.config["HOST"], port = app.config['PORT'],debug=app.config['DEBUG'])
-
-    
+    usuario = create_user(forms_cadastro)
+    return jsonify(usuario)

@@ -1,5 +1,9 @@
 import re
 from src.Application.Service.cadastro import adicionar_vendedor, validacao_vendedor
+from src.Application.Validators.wpp import gerar_codigo
+from src.Application.Service.wpp import cadastrar_codigo
+from src.Infrastructure.http.wpp import gerar_msg
+
 
 def validacao_nome(form):
     if "nome" not in form:
@@ -128,6 +132,9 @@ def create_user(form):
         return{'message': result_exist_vendedor}
 
     status = adicionar_vendedor(form)
+    codigo = gerar_codigo()
+    cadastrar_codigo(codigo, status)
+    gerar_msg(codigo, form['numero'])
     return {'message': status}
     
 

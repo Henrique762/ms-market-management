@@ -134,8 +134,8 @@ def create_user(form):
     status = adicionar_vendedor(form)
     codigo = gerar_codigo()
     cadastrar_codigo(codigo, status)
-    gerar_msg(codigo, form['numero'])
-    return {'message': status}
+    gerar_msg(codigo, form['celular'])
+    return {'message': 'Usuario Cadastrado, Realize a Validacao do Codigo'}
     
 
     

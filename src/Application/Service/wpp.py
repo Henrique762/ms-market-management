@@ -1,23 +1,26 @@
-from src.Infrastructure.Model.usuario import Vendedores
 from src.config.config import db
+from src.Infrastructure.Model.wpp import Validacao
+from src.Infrastructure.Model.usuario import Vendedores
 
-
-def adicionar_vendedor(form):
-    print(form)
-    usuario = Vendedores(nome=form['nome'], cnpj=form['cnpj'], email=form['email'], senha=form['senha'], numero_cel=form['celular'])
-    db.session.add(usuario)
+def cadastrar_codigo(codigo, cliente):
+    codigo_wpp = Validacao(codigo=codigo, cliente=cliente)
+    db.session.add(codigo_wpp)
     db.session.commit()
-    id_user = str(usuario.id)
-    return id_user
-
-def validacao_vendedor(form):
-
-    vendedor_cnpj = Vendedores.query.filter_by(cnpj=form['cnpj']).first()
-    if vendedor_cnpj:
-        return "CNPJ já cadastrado."
     
-    vendedor_email = Vendedores.query.filter_by(email=form['email']).first()
-    if vendedor_email:
-        return "Email já cadastrado."
+def validar_cod_e_tel(cod, celular):
+    codigo_user = Validacao.query.filter_by(codigo=cod).first()
+    if not codigo_user: 
+        return 'Codigo inexistente!' 
     
+    usuario = Vendedores.query.get(codigo_user.cliente)
+    if usuario.numero_cel == celular and codigo_user.codigo == cod:
+        alterar_status(codigo_user.cliente)
+        return 'Número válido!'
+    else:
+        return 'Número inválido!'
+    
+def alterar_status(id): 
+    usuario = db.session.query(Vendedores).filter_by(id=id).first()
+    usuario.status = 'Ativo'
+    db.session.commit()
     return True

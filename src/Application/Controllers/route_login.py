@@ -1,33 +1,24 @@
-from flask import Flask, request, jsonify
-from Application.Validators.login_validator import LoginService
-from Infrastructure.http.login_repositorio import UserRepositorio
-from Infrastructure.http.token import JWTProvider
-from config.config import db
-from Infrastructure.http.Model.login import User
+from flask import Blueprint, Flask,request, jsonify
+from src.config.config import app
+from src.Application.Validators.cadastro import create_user 
 
-app = Flask(__name__)
+login_blueprint = Blueprint('login', __name__, url_prefix='/api')
 
 
-# Criar instâncias
-user_repo = UserRepositorio()
-jwt_provider = JWTProvider()
-login_service = LoginService(user_repo, jwt_provider)
-
-@app.route("/login", methods=["POST"])
+@login_blueprint.route('/login', methods=['POST'])
 def login():
-    dados = request.json
-    email = dados.get("email")
-
-    token = login_service.authenticate(email)
-    if not token:
-        return jsonify({"error": "Usuário não encontrado"}), 404
+    forms_login = request.get_json()
     
-    return jsonify({"token": token}), 200
+    vendedor = vendedor_senha.query.filter_by(email=forms_login['email']).first()
 
+    if not vendedor:
+        return jsonify({"message": "Usuário não encontrado.", "status": False})
+    
 
-if __name__ == '__main__':
-    app.run(host=app.config["HOST"], port = app.config['PORT'],debug=app.config['DEBUG'])
+    if not check_password_hash(vendedor.senha, forms_login['senha']):
+        return jsonify({"message": "Senha incorreta.", "status": False}) 
 
-novo_usuario = User(email="gabrielly@email.com", password="123456")
-db.session.add(novo_usuario)
-db.session.commit()
+    
+    if vendedor.status != "Ativo":
+        return jsonify({"message": "Usuário inativo. Não é possível fazer login.", "status": False})
+

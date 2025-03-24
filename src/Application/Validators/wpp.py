@@ -1,6 +1,5 @@
 import random
-from src.Infrastructure.http.wpp import gerar_msg
-from src.Application.Service.wpp import info_usuario
+from src.Application.Service.wpp import validar_cod_e_tel
 
 def gerar_codigo():
     codigo = ""
@@ -9,3 +8,6 @@ def gerar_codigo():
         codigo += numero
     return codigo
 
+def ativacao_cod(form):
+    validar = validar_cod_e_tel(form['codigo'], form['celular'])
+    return validar

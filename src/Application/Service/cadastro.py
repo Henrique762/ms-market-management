@@ -1,12 +1,14 @@
 from src.Infrastructure.Model.usuario import Vendedores
 from src.config.config import db
 
+
 def adicionar_vendedor(form):
     print(form)
     usuario = Vendedores(nome=form['nome'], cnpj=form['cnpj'], email=form['email'], senha=form['senha'], numero_cel=form['celular'])
     db.session.add(usuario)
     db.session.commit()
-    return 'Usuario Cadastrado'
+    id_user = str(usuario.id)
+    return id_user
 
 def validacao_vendedor(form):
 

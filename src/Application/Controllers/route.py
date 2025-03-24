@@ -8,4 +8,4 @@ cadastro_blueprint = Blueprint('cadastro', __name__, url_prefix='/api')
 def cadastro():
     forms_cadastro = request.get_json()
     usuario = create_user(forms_cadastro)
-    return jsonify(usuario)
+    return jsonify(usuario), usuario['status_code']

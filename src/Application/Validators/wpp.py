@@ -27,7 +27,7 @@ def validacao_codigo(form):
     if not isinstance(form['codigo'], str):
         raise ValueError("Campo deve ser uma String")
     
-    if len(form['codigo']) == 3:
+    if  len(form['codigo']) != 4:
         raise ValueError("Campo deve ter 4 caracteres.")
     
     return True

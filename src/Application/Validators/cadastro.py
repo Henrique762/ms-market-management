@@ -124,18 +124,18 @@ def validacao_form(form):
 def create_user(form):
     result_validacao = validacao_form(form)
     if result_validacao != True:
-        return {'message': 'Erro no Cadastro do Usuario', 'errors': result_validacao}
+        return {'message': 'Erro no Cadastro do Usuario', 'errors': result_validacao, 'status_code': 400}
     
     result_exist_vendedor = validacao_vendedor(form)
 
     if result_exist_vendedor != True:
-        return{'message': result_exist_vendedor}
+        return{'message': result_exist_vendedor, 'status_code': 400}
 
     status = adicionar_vendedor(form)
     codigo = gerar_codigo()
     cadastrar_codigo(codigo, status)
     gerar_msg(codigo, form['celular'])
-    return {'message': 'Usuario Cadastrado, Realize a Validacao do Codigo'}
+    return {'message': 'Usuario Cadastrado, Realize a Validacao do Codigo', 'status_code': 200}
     
 
     

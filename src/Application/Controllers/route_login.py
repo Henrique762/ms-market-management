@@ -10,7 +10,7 @@ login_blueprint = Blueprint('login', __name__, url_prefix='/api')
 def login():
     form_login = request.get_json()
     usuario = login_user(form_login)
-    return jsonify(usuario)
+    return jsonify(usuario), usuario['status']
     
 @login_blueprint.route('/login/auth', methods=['GET'])
 @jwt_required()

@@ -41,9 +41,9 @@ def validacao_login(form):
         errors['senha'] = str(e)
 
     if errors:
-      return {"message": "Erro na autenticação do usuário", "errors": errors}
+      return {"message": "Erro na autenticação do usuário", "errors": errors, "status": 400}
     else:
-      return {"acess_token": validacao_senha(form)}
+      return {"acess_token": validacao_senha(form), "status": 200}
         
     
 def login_user(form):

@@ -1,4 +1,6 @@
 from flask import Blueprint, Flask,request, jsonify
+from src.Application.Validators.login import login_user, login_auth
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from src.config.config import app
 from src.Application.Validators.login import login_user
 
@@ -10,4 +12,9 @@ def login():
     usuario = login_user(form_login)
     return jsonify(usuario)
     
-
+@login_blueprint.route('/login/auth', methods=['GET'])
+@jwt_required()
+def protected():
+    vendedor_id = get_jwt_identity()
+    vendedor = login_auth(vendedor_id)
+    return jsonify(vendedor), vendedor['status']

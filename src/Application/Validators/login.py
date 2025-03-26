@@ -1,5 +1,3 @@
-
-import re
 from src.Application.Service.login import vendedor_cadastrado, vendedor_senha
 
 def validacao_email(form):
@@ -47,7 +45,7 @@ def validacao_login(form):
     if errors:
       return {"message": "Erro na autenticação do usuário", "errors": errors}
     else:
-      return {"message": validacao_senha(form)}
+      return {"acess_token": validacao_senha(form)}
         
     
 def login_user(form):

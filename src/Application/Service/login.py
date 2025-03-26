@@ -15,8 +15,17 @@ def vendedor_senha(form):
     if vendedor.status != 'Ativo':
         return {"message": "Usuário inativo. Não é possível fazer login.", "status": False}
     
-    access_token = create_access_token(identity=vendedor.id)
+    access_token = create_access_token(identity=str(vendedor.id))
 
     return {"message": access_token, "status": True}
+
+
+def validacao_autenticador(vendedor_id):
+    vendedor = Vendedores.query.get(vendedor_id)
+
+    if not vendedor:
+        return jsonify({"message": "Usuário não encontrado!", "status": 404})
+
+    return {"message": f"Bem-vindo, {vendedor.nome}!", "status": 200}
 
 

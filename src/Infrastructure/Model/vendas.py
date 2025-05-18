@@ -22,4 +22,12 @@ def adicionar_venda(form, valor_produto, valor_total):
     db.session.commit()
     id_venda = str(venda.id)
 
-    return True
+    return id_venda
+
+def select_vendas(id):
+    venda = db.session.query(Vendas).filter_by(id=id).first()
+
+    valor_total = venda.valor_total
+    quantidade = venda.quantidade
+
+    return [valor_total, quantidade]

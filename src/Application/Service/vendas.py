@@ -4,11 +4,15 @@ from src.config.config import db
 
 def valid_infos(form):
     id_produto = form['id_produto']
-    produto = Produtos.query.filter_by(id=id_produto).first()
-    print("Tá Parando AQUI")
+    id_vendedor = form['id_vendedor']
+    produto = Produtos.query.filter_by(id=id_produto, id_vendedor=id_vendedor).first()
+
     ### Validacao Existencia Produto
     if not produto:
         raise ValueError('Produto Inexistente')
+
+    if produto.status != "Ativo":
+        raise ValueError('Produto Inativado')
     
     
     ### Validacao Quantidade em estoque
@@ -30,7 +34,7 @@ def valid_infos(form):
 
         estoque = alterar_quantidade(id_produto, restante_estoque)
 
-    return estoque
+    return [estoque, preco_total]
     
 
 

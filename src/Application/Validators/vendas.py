@@ -46,7 +46,7 @@ def validacao_id_vendedor(form):
     
     ### Validação para verificar se o seller existe
     if valid_exist_vendedor(form['id_vendedor']) == False:
-        raise ValueError("Vendedor não existe")
+        raise ValueError("Vendedor Indisponivel")
     
     return True
 
@@ -75,6 +75,11 @@ def validacao_venda(form):
         errors['id_produto'] = str(e)
 
     try:
+        validacao_id_vendedor(form)
+    except ValueError as e:
+        errors['id_vendedor'] = str(e)
+
+    try:
         validacao_quantidade(form)
     except ValueError as e:
         errors['quantidade'] = str(e)
@@ -88,11 +93,16 @@ def validacao_venda(form):
 def create_venda(form):
     result_validacao = validacao_venda(form)
     if result_validacao != True:
-        return {"message": "Erro no processo de venda", "errors": result_validacao, "status_code": 400}
+        return {"message": "Erro no Formulario de venda", "errors": result_validacao, "status_code": 400}
     
     try: 
-        estoque = valid_infos(form)
+        result = valid_infos(form)
     except ValueError as e:
-        return {"message": str(e.args[0]), "Estoque de Produtos": str(e.args[1]), "status_code": 400}
+
+        if len(e.args) > 1:
+            return {"message": str(e.args[0]), "Estoque de Produtos": str(e.args[1]), "status_code": 400}
+        
+        else:
+            return {"message": str(e), "status_code": 400}
     
-    return {"message": "Venda Realizada", "Estoque de Produtos": estoque, "status_code": 200}
+    return {"message": "Venda Realizada", "Estoque de Produtos": result[0], "Valor Total": result[1], "status_code": 200}

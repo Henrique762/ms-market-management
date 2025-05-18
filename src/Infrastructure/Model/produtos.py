@@ -6,6 +6,7 @@ class Produtos(db.Model):
     id_vendedor = db.Column(db.Integer, db.ForeignKey('vendedores.id', ondelete="CASCADE"), nullable=False)
     quantidade= db.Column(db.Integer, nullable=False)
     valor = db.Column(db.Float, nullable=False)
+    status = db.Column(db.String, nullable=False, default='Inativo')
 
 
 def alterar_quantidade(id, quant):

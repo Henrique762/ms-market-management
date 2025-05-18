@@ -121,10 +121,10 @@ Um seller autenticado pode:
 ### 4️⃣ Realizar Venda
 - **Criar Venda**
   ```bash
-  curl -X POST "http://localhost:8080/api/sales" \
+  curl -X POST "http://localhost:8080/api/sellers/venda" \
        -H "Authorization: Bearer SEU_TOKEN" \
        -H "Content-Type: application/json" \
-       -d '{"produtoId": 1, "quantidade": 2}'
+       -d '{"id_produto": 6, "id_vendedor": 1, "quantidade": 98}'
   ```
 
 ---

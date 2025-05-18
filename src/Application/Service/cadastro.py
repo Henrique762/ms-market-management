@@ -20,3 +20,12 @@ def validacao_vendedor(form):
         return 'Email já cadastrado.'
     
     return True
+
+def valid_exist_vendedor(id):
+    usuario = Vendedores.query.filter_by(id=id).first()
+
+    if usuario:
+        return True
+    
+    else:
+        return False

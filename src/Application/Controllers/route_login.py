@@ -1,4 +1,4 @@
-from flask import Blueprint, Flask,request, jsonify
+from flask import Blueprint, Flask, request, jsonify
 from src.Application.Validators.login import login_user, login_auth
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from src.config.config import app

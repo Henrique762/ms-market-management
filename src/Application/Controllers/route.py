@@ -9,7 +9,6 @@ from src.Application.Controllers.route_produtos import produtos_bp
 cadastro_blueprint = Blueprint('cadastro', __name__, url_prefix='/api')
 ativacao_blueprint = Blueprint('ativacao', __name__, url_prefix='/api')
 venda_blueprint = Blueprint('venda', __name__, url_prefix='/api')
-produtos_blueprint = Blueprint('produtos', __name__, url_prefix='/api')
 
 @cadastro_blueprint.route('/sellers', methods=['POST'])
 def cadastro():
@@ -31,6 +30,3 @@ def venda():
     forms_venda['id_cliente'] = int(id)
     venda = create_venda(forms_venda)
     return jsonify(venda), venda['status_code']
-
-# Registrar o Blueprint de produtos
-app.register_blueprint(produtos_bp)

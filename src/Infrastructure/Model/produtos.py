@@ -4,9 +4,11 @@ class Produtos(db.Model):
     __tablename__ = "produtos"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     id_vendedor = db.Column(db.Integer, db.ForeignKey('vendedores.id', ondelete="CASCADE"), nullable=False)
-    quantidade= db.Column(db.Integer, nullable=False)
-    valor = db.Column(db.Float, nullable=False)
-    status = db.Column(db.String, nullable=False, default='Inativo')
+    nome = db.Column(db.String(100), nullable=False)
+    preco = db.Column(db.Float, nullable=False)
+    quantidade = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String(20), nullable=False, default='Ativo')
+    imagem = db.Column(db.String(255), nullable=True)
 
 
 def alterar_quantidade(id, quant):

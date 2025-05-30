@@ -23,7 +23,10 @@ def validacao_vendedor(form):
 
 def valid_exist_vendedor(id):
     usuario = Vendedores.query.filter_by(id=id).first()
-    if usuario and usuario.status == "Ativo":
-        return True
-    else:
-        return False
+    if not usuario:
+        return 'Usuario Inexistente'
+    
+    elif usuario.status == "Inativo":
+        return 'Usuario Inativo'
+    
+    return True

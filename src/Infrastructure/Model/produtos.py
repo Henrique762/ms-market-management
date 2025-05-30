@@ -11,7 +11,7 @@ class Produtos(db.Model):
 
 def alterar_quantidade(id, quant):
     produto = db.session.query(Produtos).filter_by(id=id).first()
-
+    
     produto.quantidade = quant
 
     db.session.commit()

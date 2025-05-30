@@ -1,6 +1,6 @@
 from src.config.config import app, db
 from src.Application.Controllers.route import cadastro_blueprint, ativacao_blueprint, venda_blueprint
-from src.Application.Controllers.route_login import login_blueprint
+from src.Application.Controllers.route import cadastro_blueprint, ativacao_blueprint, venda_blueprint, login_blueprint
 from flask_cors import CORS
 
 CORS(app, origins=["http://localhost:5173"])

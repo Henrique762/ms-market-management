@@ -14,25 +14,6 @@ def validacao_id_produto(form):
     return True
 
     
-def validacao_id_cliente(form):
-    if "id_seller_comprador" not in form:
-        raise ValueError("Campo não informado.")
-    
-    if form['id_cliente'] is None:
-        raise ValueError("Campo está vazio.")
-    
-
-    if not isinstance(form['id_cliente'], int):
-        raise ValueError("Campo deve ser um Int")
-    
-    
-    ### Validação para verificar se o seller existe
-    if valid_exist_vendedor(form['id_cliente']) == False:
-        raise ValueError("Vendedor não existe")
-    
-    return True
-
-    
 def validacao_id_vendedor(form):
     if "id_vendedor" not in form:
         raise ValueError("Campo não informado.")
@@ -45,8 +26,10 @@ def validacao_id_vendedor(form):
     
     
     ### Validação para verificar se o seller existe
-    if valid_exist_vendedor(form['id_vendedor']) == False:
-        raise ValueError("Vendedor Indisponivel")
+    validar_vend = valid_exist_vendedor(form['id_vendedor'])
+
+    if validar_vend != True:
+        raise ValueError(f"{validar_vend}")
     
     return True
 
@@ -105,4 +88,4 @@ def create_venda(form):
         else:
             return {"message": str(e), "status_code": 400}
     
-    return {"message": "Venda Realizada", "Estoque de Produtos": result[0], "Valor Total": result[1], "status_code": 200}
+    return {"message": "Venda Registra", "Estoque de Produtos": result[0], "Valor Total": result[1], "status_code": 200}

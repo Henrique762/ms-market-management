@@ -1,10 +1,12 @@
 from src.Infrastructure.Model.produtos import Produtos, alterar_quantidade
+from src.Infrastructure.Model.usuario import Vendedores
 from src.Infrastructure.Model.vendas import adicionar_venda
 from src.config.config import db
 
 def valid_infos(form):
     id_produto = form['id_produto']
     id_vendedor = form['id_vendedor']
+
     produto = Produtos.query.filter_by(id=id_produto, id_vendedor=id_vendedor).first()
 
     ### Validacao Existencia Produto
@@ -30,8 +32,8 @@ def valid_infos(form):
     valor = produto.valor
     preco_total = valor * quantidade
 
-    if adicionar_venda(form, valor, preco_total) == True:
-
+    add = adicionar_venda(form, valor, preco_total)
+    if add[0] == True:
         estoque = alterar_quantidade(id_produto, restante_estoque)
 
     return [estoque, preco_total]

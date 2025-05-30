@@ -1,4 +1,4 @@
-from src.Application.Service.login import validacao_autenticador, vendedor_cadastrado, vendedor_senha
+from src.Application.Service.login import vendedor_cadastrado, vendedor_senha
 
 def validacao_email(form):
     if "email" not in form:
@@ -25,7 +25,7 @@ def validacao_senha(form):
     if not senha_valida['status']:
         raise ValueError(senha_valida['message'])
     else:
-        return senha_valida['message']   
+        return senha_valida
 
 def validacao_login(form):
     errors = {}
@@ -43,13 +43,9 @@ def validacao_login(form):
     if errors:
       return {"message": "Erro na autenticação do usuário", "errors": errors, "status": 400}
     else:
-      return {"acess_token": validacao_senha(form), "status": 200}
+      return validacao_senha(form)
         
     
 def login_user(form):
     result_login = validacao_login(form)
     return result_login
-
-def login_auth(vendedor_id):
-    result_validacao = validacao_autenticador(vendedor_id)
-    return result_validacao

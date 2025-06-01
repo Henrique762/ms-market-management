@@ -5,12 +5,13 @@ from src.Application.Validators.cadastro import create_user
 from src.Application.Validators.vendas import create_venda
 from src.Application.Validators.wpp import ativacao_cod
 from src.Application.Validators.login import login_user
+from src.Application.Validators.produto import edit_produto, listar_produto, mostrar_produto_por_id
 
 cadastro_blueprint = Blueprint('cadastro', __name__, url_prefix='/api')
 ativacao_blueprint = Blueprint('ativacao', __name__, url_prefix='/api')
 venda_blueprint = Blueprint('venda', __name__, url_prefix='/api')
 login_blueprint = Blueprint('login', __name__, url_prefix='/api')
-
+produtos_bp = Blueprint('produtos', __name__, url_prefix='/api')
 
 
 @login_blueprint.route('/login/auth', methods=['POST'])
@@ -49,44 +50,14 @@ def venda():
 @produtos_bp.route('/produtos/<int:produto_id>', methods=['PUT'])
 @jwt_required()
 def editar_produto(produto_id):
-    data = request.get_json()
     id = get_jwt_identity()
+    data = request.get_json()
+    data['id_vendedor'] = int(id)
+    data['id_produto'] = int(produto_id)
+    print(data)
+    result = edit_produto(data)
 
-    campos_obrigatorios = ['quantidade', 'valor', 'status']
-    erros = {}
-
-    for campo in campos_obrigatorios:
-        if campo not in data:
-            erros[campo] = 'Campo obrigatório'
-
-    if 'quantidade' in data and not isinstance(data['quantidade'], int):
-        erros['quantidade'] = 'Deve ser um número inteiro'
-
-    if 'valor' in data:
-        try:
-            float(data['valor'])
-        except (ValueError, TypeError):
-            erros['valor'] = 'Deve ser um número válido'
-
-    if erros:
-        return jsonify({'message': 'Dados inválidos', 'errors': erros}), 400
-
-    produto = Produtos.query.get(produto_id)
-    if not produto:
-        return jsonify({'message': 'Produto não encontrado'}), 404
-
-    try:
-        produto.id_vendedor = id
-        produto.quantidade = data['quantidade']
-        produto.valor = float(data['valor'])
-        produto.status = data['status']
-
-        db.session.commit()
-        return jsonify({'message': 'Produto atualizado com sucesso'}), 200
-
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'message': f'Erro ao atualizar produto: {str(e)}'}), 500
+    return jsonify(result), result['status_code']
 
 @produtos_bp.route('/produtos', methods=['GET'])
 @jwt_required()

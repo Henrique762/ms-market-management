@@ -34,7 +34,7 @@ def ativacao():
     ativacao_codigo = ativacao_cod(forms_ativacao)
     return jsonify(ativacao_codigo) 
 
-#### Cdastro Vendas ####
+#### Cadastro Vendas ####
 @venda_blueprint.route('/sellers/venda', methods=['POST'])
 @jwt_required()
 def venda():
@@ -43,3 +43,69 @@ def venda():
     forms_venda['id_vendedor'] = int(id)
     venda = create_venda(forms_venda)
     return jsonify(venda), venda['status_code']
+
+#### ROTAS PRODUTOS ####
+
+@produtos_bp.route('/produtos/<int:produto_id>', methods=['PUT'])
+@jwt_required()
+def editar_produto(produto_id):
+    data = request.get_json()
+    id = get_jwt_identity()
+
+    campos_obrigatorios = ['quantidade', 'valor', 'status']
+    erros = {}
+
+    for campo in campos_obrigatorios:
+        if campo not in data:
+            erros[campo] = 'Campo obrigatório'
+
+    if 'quantidade' in data and not isinstance(data['quantidade'], int):
+        erros['quantidade'] = 'Deve ser um número inteiro'
+
+    if 'valor' in data:
+        try:
+            float(data['valor'])
+        except (ValueError, TypeError):
+            erros['valor'] = 'Deve ser um número válido'
+
+    if erros:
+        return jsonify({'message': 'Dados inválidos', 'errors': erros}), 400
+
+    produto = Produtos.query.get(produto_id)
+    if not produto:
+        return jsonify({'message': 'Produto não encontrado'}), 404
+
+    try:
+        produto.id_vendedor = id
+        produto.quantidade = data['quantidade']
+        produto.valor = float(data['valor'])
+        produto.status = data['status']
+
+        db.session.commit()
+        return jsonify({'message': 'Produto atualizado com sucesso'}), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': f'Erro ao atualizar produto: {str(e)}'}), 500
+
+@produtos_bp.route('/produtos', methods=['GET'])
+@jwt_required()
+def listar_produtos():
+    
+    id = get_jwt_identity()
+
+    produtos = listar_produto(id)
+    
+    return jsonify(produtos), 200
+
+@produtos_bp.route('/produtos/<int:produto_id>', methods=['GET'])
+@jwt_required()
+def obter_produto(produto_id):
+    id_vendedor = get_jwt_identity()
+
+    produto_dict, erro_response, status_code = mostrar_produto_por_id(id_vendedor, produto_id)
+
+    if erro_response:
+        return jsonify(erro_response), status_code
+
+    return jsonify(produto_dict), 200

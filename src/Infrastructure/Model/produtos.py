@@ -8,6 +8,21 @@ class Produtos(db.Model):
     valor = db.Column(db.Float, nullable=False)
     status = db.Column(db.String, nullable=False, default='Inativo')
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "id_vendedor": self.id_vendedor,
+            "quantidade": self.quantidade,
+            "valor": self.valor,
+            "status": self.status
+        }
+
+def listar_produto(id):
+    produtos = db.session.query(Produtos).filter_by(id_vendedor=id).all()
+    resultado = [a.to_dict() for a in produtos]
+
+    return resultado
+    
 
 def alterar_quantidade(id, quant):
     produto = db.session.query(Produtos).filter_by(id=id).first()

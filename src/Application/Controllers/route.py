@@ -54,7 +54,6 @@ def editar_produto(produto_id):
     data = request.get_json()
     data['id_vendedor'] = int(id)
     data['id_produto'] = int(produto_id)
-    print(data)
     result = edit_produto(data)
 
     return jsonify(result), result['status_code']

@@ -36,7 +36,8 @@ def alterar_quantidade(id, quant):
     return produto.quantidade
 
 def alterar_produto(data):
-    produto = Produtos.query.get(id)
+    produto_id = data['id_produto']
+    produto = Produtos.query.get(produto_id)
     try:
         produto.id_vendedor = data['id_vendedor']
         produto.quantidade = data['quantidade']

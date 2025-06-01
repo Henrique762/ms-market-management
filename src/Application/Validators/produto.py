@@ -31,7 +31,6 @@ def validar_produtos(data):
         return {'message': 'Dados inválidos', 'errors': erros, "status_code": 400}
 
 def edit_produto(data):
-    print(data)
     validar_produtos(data)
     result = validar_produto(data)
 

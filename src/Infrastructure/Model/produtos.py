@@ -17,7 +17,8 @@ class Produtos(db.Model):
             "id_vendedor": self.id_vendedor,
             "quantidade": self.quantidade,
             "preco": self.preco,
-            "status": self.status
+            "status": self.status,
+            "imagem": self.imagem
         }
 
 def listar_produto(id):

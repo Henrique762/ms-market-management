@@ -1,4 +1,4 @@
-from flask import Blueprint, Flask,request, jsonify
+from flask import Blueprint, Flask,request, jsonify, send_from_directory
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from src.config.config import app
 from src.config.config import db
@@ -17,6 +17,8 @@ ativacao_blueprint = Blueprint('ativacao', __name__, url_prefix='/api')
 venda_blueprint = Blueprint('venda', __name__, url_prefix='/api')
 login_blueprint = Blueprint('login', __name__, url_prefix='/api')
 produtos_bp = Blueprint('produtos', __name__, url_prefix='/api')
+
+
 
 
 @login_blueprint.route('/login/auth', methods=['POST'])
@@ -166,3 +168,8 @@ def inativar_produto(id_produto):
     inativar = inat_produto(id_produto, id_vendedor)
 
     return jsonify(inativar), inativar['status_code']
+
+@produtos_bp.route('/produtos/uploads/<path:filename>', methods=['GET'])
+def get_imagem(filename):
+    caminho = os.path.join(os.getcwd(), 'uploads', 'produtos')
+    return send_from_directory(caminho, filename)

@@ -10,14 +10,14 @@ def cadastrar_codigo(codigo, cliente):
 def validar_cod_e_tel(cod, celular):
     codigo_user = Validacao.query.filter_by(codigo=cod).first()
     if not codigo_user: 
-        return 'Codigo inexistente!' 
+        return {'message': 'Código Inexistente', 'status_code': 400}
     
     usuario = Vendedores.query.get(codigo_user.cliente)
     if usuario.numero_cel == celular and codigo_user.codigo == cod:
         alterar_status(codigo_user.cliente)
-        return 'Número válido!'
+        return {'message': 'Número válido!', 'status_code': 200}
     else:
-        return 'Número inválido!'
+        return {'message': 'Número inválido!', 'status_code': 400}
     
 def alterar_status(id): 
     usuario = db.session.query(Vendedores).filter_by(id=id).first()

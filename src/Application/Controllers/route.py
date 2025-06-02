@@ -41,7 +41,7 @@ def cadastro():
 def ativacao():
     forms_ativacao = request.get_json()
     ativacao_codigo = ativacao_cod(forms_ativacao)
-    return jsonify(ativacao_codigo) 
+    return jsonify(ativacao_codigo), ativacao_codigo['status_code']
 
 #### Cadastro Vendas ####
 @venda_blueprint.route('/sellers/venda', methods=['POST'])

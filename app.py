@@ -9,7 +9,6 @@ app.register_blueprint(ativacao_blueprint)
 app.register_blueprint(login_blueprint)
 app.register_blueprint(venda_blueprint)
 app.register_blueprint(produtos_bp)
-app.register_blueprint(produtos_bp)
 
 with app.app_context():
     db.create_all()

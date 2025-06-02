@@ -15,7 +15,7 @@ class Produtos(db.Model):
             "id": self.id,
             "id_vendedor": self.id_vendedor,
             "quantidade": self.quantidade,
-            "valor": self.valor,
+            "preco": self.preco,
             "status": self.status
         }
 
@@ -40,10 +40,12 @@ def alterar_quantidade(id, quant):
 def alterar_produto(data):
     produto_id = data['id_produto']
     produto = Produtos.query.get(produto_id)
+
     try:
         produto.id_vendedor = data['id_vendedor']
+        produto.nome = data['nome']  # Adicionado
         produto.quantidade = data['quantidade']
-        produto.valor = float(data['valor'])
+        produto.preco = float(data['preco'])  # Alterado de "valor" para "preco"
         produto.status = data['status']
 
         db.session.commit()
@@ -51,4 +53,19 @@ def alterar_produto(data):
 
     except Exception as e:
         db.session.rollback()
-        return {'message': f'Erro ao atualizar produto: {str(e)}', "status_code": 500}  
+        return {'message': f'Erro ao atualizar produto: {str(e)}', "status_code": 500}
+# def alterar_produto(data):
+#     produto_id = data['id_produto']
+#     produto = Produtos.query.get(produto_id)
+#     try:
+#         produto.id_vendedor = data['id_vendedor']
+#         produto.quantidade = data['quantidade']
+#         produto.valor = float(data['valor'])
+#         produto.status = data['status']
+
+#         db.session.commit()
+#         return {'message': 'Produto atualizado com sucesso', "status_code": 200}
+
+#     except Exception as e:
+#         db.session.rollback()
+#         return {'message': f'Erro ao atualizar produto: {str(e)}', "status_code": 500}  

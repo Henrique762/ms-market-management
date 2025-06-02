@@ -7,7 +7,6 @@ from src.Application.Validators.vendas import create_venda
 from src.Application.Validators.wpp import ativacao_cod
 from src.Application.Validators.login import login_user
 from src.Application.Validators.produto import edit_produto, listar_produto, mostrar_produto_por_id
-from src.Application.Controllers.route_produtos import produtos_bp
 from src.Infrastructure.Model.produtos import Produtos
 from werkzeug.utils import secure_filename
 import os

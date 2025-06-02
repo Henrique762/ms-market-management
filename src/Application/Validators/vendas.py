@@ -88,4 +88,4 @@ def create_venda(form):
         else:
             return {"message": str(e), "status_code": 400}
     
-    return {"message": "Venda Registra", "Estoque de Produtos": result[0], "Valor Total": result[1], "status_code": 200}
+    return {"message": "Venda Registrada", "Estoque de Produtos": result[0], "Valor Total": result[1], "status_code": 200}

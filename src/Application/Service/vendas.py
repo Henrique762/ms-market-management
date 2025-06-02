@@ -29,7 +29,7 @@ def valid_infos(form):
 
     ### Valor Total Compra
 
-    valor = produto.valor
+    valor = produto.preco
     preco_total = valor * quantidade
 
     add = adicionar_venda(form, valor, preco_total)

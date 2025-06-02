@@ -11,24 +11,46 @@ def validar_id_produto(produto_id):
     return erros
 
 def validar_produtos(data):
-    campos_obrigatorios = ['quantidade', 'valor', 'status']
+    campos_obrigatorios = ['nome', 'quantidade', 'preco', 'status']
     erros = {}
 
     for campo in campos_obrigatorios:
         if campo not in data:
             erros[campo] = 'Campo obrigatório'
 
+    if 'nome' in data and not isinstance(data['nome'], str):
+        erros['nome'] = 'Deve ser uma string'
+
     if 'quantidade' in data and not isinstance(data['quantidade'], int):
         erros['quantidade'] = 'Deve ser um número inteiro'
 
-    if 'valor' in data:
+    if 'preco' in data:
         try:
-            float(data['valor'])
+            float(data['preco'])
         except (ValueError, TypeError):
-            erros['valor'] = 'Deve ser um número válido'
+            erros['preco'] = 'Deve ser um número válido'
 
     if erros:
         return {'message': 'Dados inválidos', 'errors': erros, "status_code": 400}
+# def validar_produtos(data):
+#     campos_obrigatorios = ['nome', 'quantidade', 'valor', 'status']
+#     erros = {}
+
+#     for campo in campos_obrigatorios:
+#         if campo not in data:
+#             erros[campo] = 'Campo obrigatório'
+
+#     if 'quantidade' in data and not isinstance(data['quantidade'], int):
+#         erros['quantidade'] = 'Deve ser um número inteiro'
+
+#     if 'valor' in data:
+#         try:
+#             float(data['valor'])
+#         except (ValueError, TypeError):
+#             erros['valor'] = 'Deve ser um número válido'
+
+#     if erros:
+#         return {'message': 'Dados inválidos', 'errors': erros, "status_code": 400}
 
 def edit_produto(data):
     validar_produtos(data)

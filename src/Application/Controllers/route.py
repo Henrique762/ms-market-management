@@ -6,7 +6,7 @@ from src.Application.Validators.cadastro import create_user
 from src.Application.Validators.vendas import create_venda
 from src.Application.Validators.wpp import ativacao_cod
 from src.Application.Validators.login import login_user
-from src.Application.Validators.produto import edit_produto, listar_produto, mostrar_produto_por_id
+from src.Application.Validators.produto import edit_produto, listar_produto, mostrar_produto_por_id, inat_produto
 from src.Infrastructure.Model.produtos import Produtos
 from werkzeug.utils import secure_filename
 import os
@@ -156,3 +156,13 @@ def deletar_produto(id):
         return jsonify({'message': 'Produto deletado com sucesso'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 400
+    
+@produtos_bp.route('/produtos/<int:id_produto>/inactive', methods=['PATCH'])
+@jwt_required()
+def inativar_produto(id_produto):
+
+    id_vendedor = get_jwt_identity()
+
+    inativar = inat_produto(id_produto, id_vendedor)
+
+    return jsonify(inativar), inativar['status_code']

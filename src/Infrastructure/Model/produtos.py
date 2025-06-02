@@ -13,6 +13,7 @@ class Produtos(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
+            "nome": self.nome,
             "id_vendedor": self.id_vendedor,
             "quantidade": self.quantidade,
             "preco": self.preco,
@@ -54,18 +55,13 @@ def alterar_produto(data):
     except Exception as e:
         db.session.rollback()
         return {'message': f'Erro ao atualizar produto: {str(e)}', "status_code": 500}
-# def alterar_produto(data):
-#     produto_id = data['id_produto']
-#     produto = Produtos.query.get(produto_id)
-#     try:
-#         produto.id_vendedor = data['id_vendedor']
-#         produto.quantidade = data['quantidade']
-#         produto.valor = float(data['valor'])
-#         produto.status = data['status']
 
-#         db.session.commit()
-#         return {'message': 'Produto atualizado com sucesso', "status_code": 200}
+def inativar_produto(produto_id):
+    produto = db.session.query(Produtos).filter_by(id=produto_id).first()
 
-#     except Exception as e:
-#         db.session.rollback()
-#         return {'message': f'Erro ao atualizar produto: {str(e)}', "status_code": 500}  
+    if not produto:
+        return False, 'Produto não encontrado'
+
+    produto.status = 'Inativo'
+    db.session.commit()
+    return True, 'Produto inativado com sucesso'

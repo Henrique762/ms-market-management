@@ -1,5 +1,5 @@
 from src.Infrastructure.Model.produtos import Produtos
-from src.Application.Service.produto import validar_produto
+from src.Application.Service.produto import validar_produto, in_produto
 from src.config.config import db
 
 def validar_id_produto(produto_id):
@@ -32,25 +32,6 @@ def validar_produtos(data):
 
     if erros:
         return {'message': 'Dados inválidos', 'errors': erros, "status_code": 400}
-# def validar_produtos(data):
-#     campos_obrigatorios = ['nome', 'quantidade', 'valor', 'status']
-#     erros = {}
-
-#     for campo in campos_obrigatorios:
-#         if campo not in data:
-#             erros[campo] = 'Campo obrigatório'
-
-#     if 'quantidade' in data and not isinstance(data['quantidade'], int):
-#         erros['quantidade'] = 'Deve ser um número inteiro'
-
-#     if 'valor' in data:
-#         try:
-#             float(data['valor'])
-#         except (ValueError, TypeError):
-#             erros['valor'] = 'Deve ser um número válido'
-
-#     if erros:
-#         return {'message': 'Dados inválidos', 'errors': erros, "status_code": 400}
 
 def edit_produto(data):
     validar_produtos(data)
@@ -73,5 +54,15 @@ def mostrar_produto_por_id(id_vendedor, produto_id):
 def listar_produto(id):
     produtos = db.session.query(Produtos).filter_by(id_vendedor=id).all()
     resultado = [a.to_dict() for a in produtos]
+
+    return resultado
+
+
+def inat_produto(produto_id, id_vendedor):
+    erros = validar_id_produto(produto_id)
+    if erros:
+        return {'message': 'ID inválido', 'errors': erros, 'status_code': 400}
+
+    resultado = in_produto(id_vendedor, produto_id)
 
     return resultado

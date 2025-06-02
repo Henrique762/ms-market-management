@@ -18,6 +18,6 @@ def vendedor_senha(form):
     access_token = create_access_token(identity=str(vendedor.id))
 
     return {"message": f"Bem-vindo, {vendedor.nome}!",
-            "access_token": access_token, "status": 200}
+            "access_token": access_token, "status": 200, "id": vendedor.id, "nome": vendedor.nome }
 
 

@@ -28,7 +28,6 @@ def login():
     
 
 #### Cadastro Sellers ####
-produtos_blueprint = Blueprint('produtos', __name__, url_prefix='/api')
 
 @cadastro_blueprint.route('/sellers', methods=['POST'])
 def cadastro():
@@ -95,7 +94,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@produtos_blueprint.route('/produtos', methods=['POST'])
+@produtos_bp.route('/produtos', methods=['POST'])
 @jwt_required()
 def cadastrar_produto():
     try:
@@ -116,7 +115,7 @@ def cadastrar_produto():
             nome=dados['nome'],
             preco=float(dados['preco']),
             quantidade=int(dados['quantidade']),
-            status='Ativo',
+            status=dados['status'],
             imagem=imagem,
             id_vendedor=int(id_vendedor)
         )
@@ -139,7 +138,7 @@ def cadastrar_produto():
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
-@produtos_blueprint.route('/produtos/<int:id>', methods=['DELETE'])
+@produtos_bp.route('/produtos/<int:id>', methods=['DELETE'])
 @jwt_required()
 def deletar_produto(id):
     try:

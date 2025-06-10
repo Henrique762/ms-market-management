@@ -35,6 +35,8 @@ def validar_produtos(data):
 
 def edit_produto(data):
     validar_produtos(data)
+    if not data.get('seller'):
+        data['seller'] = 'None'
     result = validar_produto(data)
 
     return result

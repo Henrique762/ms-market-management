@@ -119,7 +119,7 @@ def cadastrar_produto():
             quantidade=int(dados['quantidade']),
             status=dados['status'],
             imagem=imagem,
-            id_vendedor=int(id_vendedor)
+            id_vendedor=int(id_vendedor),
         )
         
         db.session.add(novo_produto)
@@ -134,7 +134,8 @@ def cadastrar_produto():
                 'quantidade': novo_produto.quantidade,
                 'preco': novo_produto.preco,
                 'status': novo_produto.status,
-                'imagem': novo_produto.imagem
+                'imagem': novo_produto.imagem,
+                'seller': novo_produto.seller
             }
         }), 201
     except Exception as e:

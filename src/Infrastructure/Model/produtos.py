@@ -4,6 +4,7 @@ class Produtos(db.Model):
     __tablename__ = "produtos"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     id_vendedor = db.Column(db.Integer, db.ForeignKey('vendedores.id', ondelete="CASCADE"), nullable=False)
+    seller = db.Column(db.String(100), nullable=False, default='None')
     nome = db.Column(db.String(100), nullable=False)
     preco = db.Column(db.Float, nullable=False)
     quantidade = db.Column(db.Integer, nullable=False)
@@ -18,7 +19,8 @@ class Produtos(db.Model):
             "quantidade": self.quantidade,
             "preco": self.preco,
             "status": self.status,
-            "imagem": self.imagem
+            "imagem": self.imagem,
+            "seller": self.seller
         }
 
 def listar_produto(id):
@@ -43,12 +45,15 @@ def alterar_produto(data):
     produto_id = data['id_produto']
     produto = Produtos.query.get(produto_id)
 
+
+
     try:
         produto.id_vendedor = data['id_vendedor']
         produto.nome = data['nome']  # Adicionado
         produto.quantidade = data['quantidade']
         produto.preco = float(data['preco'])  # Alterado de "valor" para "preco"
         produto.status = data['status']
+        produto.seller = data['seller']
 
         db.session.commit()
         return {'message': 'Produto atualizado com sucesso', "status_code": 200}
